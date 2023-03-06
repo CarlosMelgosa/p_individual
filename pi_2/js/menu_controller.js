@@ -8,10 +8,7 @@ function carrega_pi_2(){
 }
 
 function exit (){
-	if (name != ""){
-		alert("Leaving " + name + "'s game");
-	}
-	name = "";
+	loadpage("../index.html");
 }
 
 function options(){
