@@ -4,10 +4,15 @@
 		<link rel="stylesheet" href="../styles/main.css">
 		<script src="../js/game_controller.js"></script>
 		<script src="../js/loader.js"></script>
+		<script src="../js/menu_controller.js"></script>
 		<title> My first game - Game </title>
 	</head>
 	<body>
-		<p class="menu-object" id="title">Memory game</p>
+		<div class="capçal">
+			<div class="titol">
+				<p class="menu-object" id="title">Memory game</p>
+			</div>
+		</div>
 		<div class="tauler">
 			<div class="carta1">
 				<img src="../resources/cb.png" onclick="items[0].do_click()">
@@ -22,6 +27,11 @@
 				<img src="../resources/cb.png" onclick="items[3].do_click()">
 			</div>
 		</div>
-		<a class="menu-object" href="../">GoToMenu</a>
+		<div class="boto_joc">
+			<div class="opcio">
+				<button class="menu-object" onclick="enrere()"> GoToMenu</button>
+			</div>
+		</div>
+		
 	</body>
 </html>

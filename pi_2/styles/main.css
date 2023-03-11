@@ -77,24 +77,48 @@ button.index-object:hover:not(:active){
 }
 
 .titleindex {
+	justify-self: center;
 	grid-column: 2;
 	grid-row: 1 ;
 }
 
 .button1 {
+	justify-self: center;
 	grid-column: 2;
 	grid-row: 2 ;
 } 
 
 .button2 {
+	justify-self: center;
 	grid-column: 2;
 	grid-row: 3 ;
 } 
 
 .button3 {
+	justify-self: center;
 	grid-column: 2;
 	grid-row: 4 ;
 } 
+
+.capçal {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.titol {
+	justify-self: center;
+	grid-column: 2;
+}
+
+.boto_joc {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.opcio {
+	justify-self: center;
+	grid-column: 2;
+}
 
 .tauler {
 	display: grid;
@@ -103,18 +127,22 @@ button.index-object:hover:not(:active){
 }
 
 .carta1 {
+	justify-self: center;
 	grid-column: 2;
 	grid-row: 1 ;
 }
 .carta2 {
+	justify-self: center;
 	grid-column: 3;
 	grid-row: 1 ;
 }
 .carta3 {
+	justify-self: center;
 	grid-column: 2;
 	grid-row: 2 ;
 }
 .carta4 {
+	justify-self: center;
 	grid-column: 3;
 	grid-row: 2 ;
 }
