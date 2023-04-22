@@ -28,7 +28,7 @@ var gameObj = function(){
 				this.items=l_partida.items;
 				this.num_cards=l_partida.num_cards;
 				this.bad_clicks=l_partida.bad_clicks;
-				console.log(this.num_cards);
+				this.comencat=true;
 			}
 			else{
 				var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
