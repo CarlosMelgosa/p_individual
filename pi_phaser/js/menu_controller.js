@@ -7,7 +7,7 @@ function start_game(){
 }
 
 function phaser_game(){
-	loadpage("./html/phasergame.html");
+	loadpage("./pi_phaser/index.html");
 }
 function load(){
 	loadpage("./html/load.html");
