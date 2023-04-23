@@ -9,6 +9,11 @@ function start_game(){
 function phaser_game(){
 	loadpage("./pi_phaser/index.html");
 }
+
+function start_phasergame(){
+	loadpage("./html/phasergame.html");
+}
+
 function load(){
 	loadpage("./html/load.html");
 }
