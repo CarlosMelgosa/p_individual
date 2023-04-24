@@ -63,12 +63,10 @@ class GameScene extends Phaser.Scene {
 			this.comencat=true;
 			let i=0;
 			this.cards.children.iterate((card)=>{
-				console.log("pasa");
 				card.card_id=arraycards[i];
 				i++;
 				card.setInteractive();
 				card.on('pointerup', ()=> {
-					console.log("click");
 					card.disableBody(true,true);
 					if(this.firstClick){
 						if(this.firstClick.card_id !== card.card_id){
@@ -81,8 +79,11 @@ class GameScene extends Phaser.Scene {
 							else{
 								this.score-=10;
 							}
-							this.firstClick.enableBody(false,0,0,true,true);
-							card.enableBody(false,0,0,true,true);
+							setTimeout(() => {	
+								this.firstClick.enableBody(false,0,0,true,true);
+								card.enableBody(false,0,0,true,true);
+								this.firstClick=null;
+							},500);
 							if(this.score<=0){
 								alert("Game Over");
 								loadpage("../");
@@ -94,8 +95,8 @@ class GameScene extends Phaser.Scene {
 								alert("You Win with "+ this.score + " points.");
 								loadpage("../");
 							}
+							this.firstClick=null;
 						}
-						this.firstClick=null;
 					}
 					else{
 						this.firstClick=card;

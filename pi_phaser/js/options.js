@@ -25,8 +25,8 @@ var options = function(){
 			num: function(value){
 				if (value < 2)
 					this.num = 2;
-				else if (value > 4)
-					this.num = 4;
+				else if (value > 6)
+					this.num = 6;
 			}
 		},
 		methods: { 
