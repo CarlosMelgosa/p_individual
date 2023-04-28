@@ -26,6 +26,15 @@ class GameScene extends Phaser.Scene {
 		var game_data = JSON.parse(json);
 		this.num_card=game_data.cards;
 		this.dificultat=game_data.dificulty;
+		if(this.dificultat=="hard"){
+			this.tempor=500;
+		}
+		else if(this.dificultat=="normal"){
+			this.tempor=1000;
+		}
+		else{
+			this.tempor=1500;
+		}
 		let arraycards=[];
 		this.items = this.items.slice();
 		this.items.sort(function(){return Math.random() - 0.5});
@@ -104,10 +113,25 @@ class GameScene extends Phaser.Scene {
 				},card);
 			});
 		}, this.tempor);
-
 		
 	}
-
+	save(){
+		let partida={
+			username: this.username,
+			current_card: this.current_card,
+			items: this.items,
+			num_cards: this.num_cards,
+			bad_clicks: this.bad_clicks
+		}
+		let arrayPartides=[];
+		if(localStorage.partides){
+			arrayPartides=JSON.parse(localStorage.partides);
+			if(!Array.isArray(arrayPartides))arrayPartides=[];
+		}
+		arrayPartides.push(partida);
+		localStorage.partides=JSON.stringify(arrayPartides);
+		loadpage("../");
+	}
 	update(){}
 }
 
