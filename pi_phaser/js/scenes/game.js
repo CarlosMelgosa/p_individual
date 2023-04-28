@@ -11,6 +11,8 @@ class GameScene extends Phaser.Scene {
 		this.començat=false;
 		this.dificultat="hard";
 		this.username="";
+		this.botoguardar="";
+		this.save=null;
 	}
 	preload(){
 		this.load.image('back','../resources/back.png');
@@ -59,7 +61,30 @@ class GameScene extends Phaser.Scene {
 		}
 
 		this.cards= this.physics.add.staticGroup();
+		
+		this.botoguardar = this.add.text(500, 500, 'Save game', {fill: '#fff'} );
+		this.botoguardar.setBackgroundColor('#7b3046')
+		this.botoguardar.setInteractive();
+		this.botoguardar.on('pointerup', ()=> {console.log('works')});
 
+		this.save(){
+			console.log("facoses");
+			/*let partida={
+				username: this.username,
+				current_card: this.current_card,
+				items: this.items,
+				num_cards: this.num_cards,
+				bad_clicks: this.bad_clicks
+			}
+			let arrayPartides=[];
+			if(localStorage.partides){
+				arrayPartides=JSON.parse(localStorage.partides);
+				if(!Array.isArray(arrayPartides))arrayPartides=[];
+			}
+			arrayPartides.push(partida);
+			localStorage.partides=JSON.stringify(arrayPartides);
+			loadpage("../");*/
+		}
 		setTimeout(() => {
 			let x=150;
 			let y=200;
@@ -116,26 +141,12 @@ class GameScene extends Phaser.Scene {
 			});
 		}, this.tempor);
 		
+		
+		
 	}
+	
 	update(){}
-	save(){
-		console.log("facoses");
-		let partida={
-			username: this.username,
-			current_card: this.current_card,
-			items: this.items,
-			num_cards: this.num_cards,
-			bad_clicks: this.bad_clicks
-		}
-		let arrayPartides=[];
-		if(localStorage.partides){
-			arrayPartides=JSON.parse(localStorage.partides);
-			if(!Array.isArray(arrayPartides))arrayPartides=[];
-		}
-		arrayPartides.push(partida);
-		localStorage.partides=JSON.stringify(arrayPartides);
-		loadpage("../");
-	}
+	
 }
 
 
