@@ -11,6 +11,8 @@ function phaser_game(){
 }
 
 function start_phasergame(){
+	name = prompt("User name");
+	sessionStorage.setItem("username", name);
 	loadpage("./html/phasergame.html");
 }
 

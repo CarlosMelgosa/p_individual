@@ -10,6 +10,7 @@ class GameScene extends Phaser.Scene {
 		this.tempor=1000;
 		this.començat=false;
 		this.dificultat="hard";
+		this.username="";
 	}
 	preload(){
 		this.load.image('back','../resources/back.png');
@@ -22,6 +23,7 @@ class GameScene extends Phaser.Scene {
 	}
 
 	create(){
+		this.username = sessionStorage.getItem("username","unknown");
 		var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
 		var game_data = JSON.parse(json);
 		this.num_card=game_data.cards;
@@ -115,7 +117,9 @@ class GameScene extends Phaser.Scene {
 		}, this.tempor);
 		
 	}
+	update(){}
 	save(){
+		console.log("facoses");
 		let partida={
 			username: this.username,
 			current_card: this.current_card,
@@ -132,8 +136,8 @@ class GameScene extends Phaser.Scene {
 		localStorage.partides=JSON.stringify(arrayPartides);
 		loadpage("../");
 	}
-	update(){}
 }
+
 
 
 /*class GameScene extends Phaser.Scene {
