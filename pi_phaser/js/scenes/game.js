@@ -139,10 +139,7 @@ class GameScene extends Phaser.Scene {
 					}
 				},card);
 			});
-		}, this.tempor);
-		
-		
-		
+		}, this.tempor);	
 	}
 	
 	update(){}
