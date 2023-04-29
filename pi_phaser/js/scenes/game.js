@@ -12,8 +12,11 @@ class GameScene extends Phaser.Scene {
 		this.dificultat="hard";
 		this.username="";
 		this.botoguardar="";
-		this.save=null;
+		this.bad_clicks=0;
+		this.l_partida=null;
+		this.arraycards=[];
 	}
+	
 	preload(){
 		this.load.image('back','../resources/back.png');
 		this.load.image('cb','../resources/cb.png');
@@ -25,11 +28,50 @@ class GameScene extends Phaser.Scene {
 	}
 
 	create(){
-		this.username = sessionStorage.getItem("username","unknown");
-		var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
-		var game_data = JSON.parse(json);
-		this.num_card=game_data.cards;
-		this.dificultat=game_data.dificulty;
+		let l_partida=null;
+		if(sessionStorage.idPartida && localStorage.partides){
+			let arrayPartides=JSON.parse(localStorage.partides);
+			if(sessionStorage.idPartida<arrayPartides.length)
+				l_partida=arrayPartides[sessionStorage.idPartida];
+		}
+		if(l_partida){
+			this.username=l_partida.username;
+			this.current_card=l_partida.current_card;
+			this.items=l_partida.items;
+			this.num_card=l_partida.num_cards;
+			this.bad_clicks=l_partida.bad_clicks;
+			this.comencat=true;
+			this.cards=l_partida.cards;
+			this.arraycards=l_partida.arraycards;
+		}
+		else{
+			this.username = sessionStorage.getItem("username","unknown");
+			var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
+			var game_data = JSON.parse(json);
+			this.num_card=game_data.cards;
+			this.dificultat=game_data.dificulty;
+			//let arraycards=[];
+			this.items = this.items.slice();
+			this.items.sort(function(){return Math.random() - 0.5});
+			this.items = this.items.slice(0, this.num_card);
+			this.items = this.items.concat(this.items);
+			this.items.sort(function(){return Math.random() - 0.5});
+			for (var k = 0; k < this.items.length; k++){
+				this.arraycards.push(this.items[k]);
+			}
+			this.cameras.main.setBackgroundColor(0xBFFCFF);
+			let x=150;
+			let y=200;
+			for (let v=0;v<this.arraycards.length;v++){
+				this.add.image(x,y,this.arraycards[v]);
+				x+=150;
+				if(x>=550){
+					x=150;
+					y=y+150;
+				}
+			}
+			this.cards= this.physics.add.staticGroup();
+		}
 		if(this.dificultat=="hard"){
 			this.tempor=500;
 		}
@@ -39,42 +81,23 @@ class GameScene extends Phaser.Scene {
 		else{
 			this.tempor=1500;
 		}
-		let arraycards=[];
-		this.items = this.items.slice();
-		this.items.sort(function(){return Math.random() - 0.5});
-		this.items = this.items.slice(0, this.num_card);
-		this.items = this.items.concat(this.items);
-		this.items.sort(function(){return Math.random() - 0.5});
-		for (var k = 0; k < this.items.length; k++){
-			arraycards.push(this.items[k]);
-		}
-		this.cameras.main.setBackgroundColor(0xBFFCFF);
-		let x=150;
-		let y=200;
-		for (let v=0;v<arraycards.length;v++){
-			this.add.image(x,y,arraycards[v]);
-			x+=150;
-			if(x>=550){
-				x=150;
-				y=y+150;
-			}
-		}
-
-		this.cards= this.physics.add.staticGroup();
-		
 		this.botoguardar = this.add.text(500, 500, 'Save game', {fill: '#fff'} );
 		this.botoguardar.setBackgroundColor('#7b3046')
 		this.botoguardar.setInteractive();
-		this.botoguardar.on('pointerup', ()=> {console.log('works')});
+		this.botoguardar.on('pointerup', ()=> {
+			save();
+		});
 
-		this.save(){
-			console.log("facoses");
-			/*let partida={
+		function save(){
+			console.log(this.username);
+			let partida={
 				username: this.username,
 				current_card: this.current_card,
 				items: this.items,
-				num_cards: this.num_cards,
-				bad_clicks: this.bad_clicks
+				num_cards: this.num_card,
+				bad_clicks: this.bad_clicks,
+				arraycards: this.arraycards,
+				cards: this.cards
 			}
 			let arrayPartides=[];
 			if(localStorage.partides){
@@ -83,12 +106,12 @@ class GameScene extends Phaser.Scene {
 			}
 			arrayPartides.push(partida);
 			localStorage.partides=JSON.stringify(arrayPartides);
-			loadpage("../");*/
+			loadpage("../");
 		}
 		setTimeout(() => {
 			let x=150;
 			let y=200;
-			for (let z=0;z<arraycards.length;z++){
+			for (let z=0;z<this.arraycards.length;z++){
 				this.cards.create(x,y,'back');
 				x+=150;
 				if(x>=550){
@@ -99,7 +122,7 @@ class GameScene extends Phaser.Scene {
 			this.comencat=true;
 			let i=0;
 			this.cards.children.iterate((card)=>{
-				card.card_id=arraycards[i];
+				card.card_id=this.arraycards[i];
 				i++;
 				card.setInteractive();
 				card.on('pointerup', ()=> {
@@ -143,10 +166,10 @@ class GameScene extends Phaser.Scene {
 	}
 	
 	update(){}
-	
 }
 
 
+//VERSIÓ VELLA DEL CODI (BORRAR)
 
 /*class GameScene extends Phaser.Scene {
 	constructor(){
