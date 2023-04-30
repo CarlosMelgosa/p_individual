@@ -39,7 +39,7 @@ class GameScene extends Phaser.Scene {
 			this.current_card=l_partida.current_card;
 			this.items=l_partida.items;
 			this.num_card=l_partida.num_cards;
-			this.bad_clicks=l_partida.bad_clicks;
+			this.score=l_partida.score;
 			this.comencat=true;
 			this.cards=l_partida.cards;
 			this.arraycards=l_partida.arraycards;
@@ -85,29 +85,8 @@ class GameScene extends Phaser.Scene {
 		this.botoguardar.setBackgroundColor('#7b3046')
 		this.botoguardar.setInteractive();
 		this.botoguardar.on('pointerup', ()=> {
-			save();
+			this.save();
 		});
-
-		function save(){
-			console.log(this.username);
-			let partida={
-				username: this.username,
-				current_card: this.current_card,
-				items: this.items,
-				num_cards: this.num_card,
-				bad_clicks: this.bad_clicks,
-				arraycards: this.arraycards,
-				cards: this.cards
-			}
-			let arrayPartides=[];
-			if(localStorage.partides){
-				arrayPartides=JSON.parse(localStorage.partides);
-				if(!Array.isArray(arrayPartides))arrayPartides=[];
-			}
-			arrayPartides.push(partida);
-			localStorage.partides=JSON.stringify(arrayPartides);
-			loadpage("../");
-		}
 		setTimeout(() => {
 			let x=150;
 			let y=200;
@@ -164,7 +143,26 @@ class GameScene extends Phaser.Scene {
 			});
 		}, this.tempor);	
 	}
-	
+	save(){
+		console.log(this.username);
+		let partida={
+			username: this.username,
+			current_card: this.current_card,
+			items: this.items,
+			num_cards: this.num_card,
+			score: this.score,
+			arraycards: this.arraycards,
+			cards: this.cards
+		}
+		let arrayPartides=[];
+		if(localStorage.partides){
+			arrayPartides=JSON.parse(localStorage.partides);
+			if(!Array.isArray(arrayPartides))arrayPartides=[];
+		}
+		arrayPartides.push(partida);
+		localStorage.partides=JSON.stringify(arrayPartides);
+		loadpage("../");
+	}
 	update(){}
 }
 
