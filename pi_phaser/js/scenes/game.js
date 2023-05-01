@@ -13,8 +13,10 @@ class GameScene extends Phaser.Scene {
 		this.username="";
 		this.botoguardar="";
 		this.bad_clicks=0;
-		this.l_partida=null;
 		this.arraycards=[];
+		this.comencat=false;
+		this.l_partida=null;
+
 	}
 	
 	preload(){
@@ -28,21 +30,20 @@ class GameScene extends Phaser.Scene {
 	}
 
 	create(){
-		let l_partida=null;
 		if(sessionStorage.idPartida && localStorage.partides){
 			let arrayPartides=JSON.parse(localStorage.partides);
 			if(sessionStorage.idPartida<arrayPartides.length)
-				l_partida=arrayPartides[sessionStorage.idPartida];
+			this.l_partida=arrayPartides[sessionStorage.idPartida];
 		}
-		if(l_partida){
-			this.username=l_partida.username;
-			this.current_card=l_partida.current_card;
-			this.items=l_partida.items;
-			this.num_card=l_partida.num_cards;
-			this.score=l_partida.score;
+		if(this.l_partida){
+			this.username=this.l_partida.username;
+			this.current_card=this.l_partida.current_card;
+			this.items=this.l_partida.items;
+			this.num_card=this.l_partida.num_cards;
+			this.score=this.l_partida.score;
 			this.comencat=true;
-			this.cards=l_partida.cards;
-			this.arraycards=l_partida.arraycards;
+			this.cards=this.l_partida.cards;
+			this.arraycards=this.l_partida.arraycards;
 		}
 		else{
 			this.username = sessionStorage.getItem("username","unknown");
