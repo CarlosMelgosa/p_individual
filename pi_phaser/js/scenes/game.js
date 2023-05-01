@@ -6,6 +6,7 @@ class GameScene extends Phaser.Scene {
 		this.num_card=4;
 		this.score=100;
 		this.correct=0;
+		this.encertats=[];
 		this.items=['co','cb','sb','so','tb','to'];
 		this.tempor=1000;
 		this.començat=false;
@@ -15,7 +16,7 @@ class GameScene extends Phaser.Scene {
 		this.bad_clicks=0;
 		this.arraycards=[];
 		this.comencat=false;
-		this.l_partida=null;
+		//this.l_partida=null;
 
 	}
 	
@@ -30,20 +31,24 @@ class GameScene extends Phaser.Scene {
 	}
 
 	create(){
+		let l_partida=null;
 		if(sessionStorage.idPartida && localStorage.partides){
 			let arrayPartides=JSON.parse(localStorage.partides);
 			if(sessionStorage.idPartida<arrayPartides.length)
-			this.l_partida=arrayPartides[sessionStorage.idPartida];
+			l_partida=arrayPartides[sessionStorage.idPartida];
 		}
-		if(this.l_partida){
-			this.username=this.l_partida.username;
-			this.current_card=this.l_partida.current_card;
-			this.items=this.l_partida.items;
-			this.num_card=this.l_partida.num_cards;
-			this.score=this.l_partida.score;
+		if(l_partida){
+			this.username=l_partida.username;
+			this.current_card=l_partida.current_card;
+			this.items=l_partida.items;
+			this.num_card=l_partida.num_cards;
+			this.score=l_partida.score;
 			this.comencat=true;
-			this.cards=this.l_partida.cards;
-			this.arraycards=this.l_partida.arraycards;
+			//this.cards=this.l_partida.cards;
+			this.arraycards=l_partida.arraycards;
+			this.correct=l_partida.correct;
+			this.encertats=l_partida.encertats;
+			l_partida=null;
 		}
 		else{
 			this.username = sessionStorage.getItem("username","unknown");
@@ -57,22 +62,24 @@ class GameScene extends Phaser.Scene {
 			this.items = this.items.slice(0, this.num_card);
 			this.items = this.items.concat(this.items);
 			this.items.sort(function(){return Math.random() - 0.5});
+			console.log(this.encertats.length);
 			for (var k = 0; k < this.items.length; k++){
 				this.arraycards.push(this.items[k]);
 			}
-			this.cameras.main.setBackgroundColor(0xBFFCFF);
-			let x=150;
-			let y=200;
-			for (let v=0;v<this.arraycards.length;v++){
-				this.add.image(x,y,this.arraycards[v]);
-				x+=150;
-				if(x>=550){
-					x=150;
-					y=y+150;
-				}
-			}
-			this.cards= this.physics.add.staticGroup();
 		}
+		this.cameras.main.setBackgroundColor(0xBFFCFF);
+		let x=150;
+		let y=200;
+		for (let v=0;v<this.arraycards.length;v++){
+			this.add.image(x,y,this.arraycards[v]);
+			x+=150;
+			if(x>=550){
+				x=150;
+				y=y+150;
+			}
+		}
+		this.cards= this.physics.add.staticGroup();
+		
 		if(this.dificultat=="hard"){
 			this.tempor=500;
 		}
@@ -92,7 +99,18 @@ class GameScene extends Phaser.Scene {
 			let x=150;
 			let y=200;
 			for (let z=0;z<this.arraycards.length;z++){
-				this.cards.create(x,y,'back');
+				let descoberta=false;
+				let k=0;
+				while(k<this.encertats.length && !descoberta){
+					if(this.arraycards[z]===this.encertats[k]){
+						descoberta=true
+					}
+					k++;
+				}
+				if(!descoberta){
+					this.cards.create(x,y,'back');
+				}
+				console.log("no");
 				x+=150;
 				if(x>=550){
 					x=150;
@@ -130,6 +148,7 @@ class GameScene extends Phaser.Scene {
 						}
 						else{
 							this.correct++;
+							this.encertats.push(this.firstClick.card_id);
 							if(this.correct>=this.num_card){
 								alert("You Win with "+ this.score + " points.");
 								loadpage("../");
@@ -153,7 +172,9 @@ class GameScene extends Phaser.Scene {
 			num_cards: this.num_card,
 			score: this.score,
 			arraycards: this.arraycards,
-			cards: this.cards
+			correct: this.correct,
+			encertats: this.encertats
+			//cards: this.cards
 		}
 		let arrayPartides=[];
 		if(localStorage.partides){
