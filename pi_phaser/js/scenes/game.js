@@ -48,7 +48,7 @@ class GameScene extends Phaser.Scene {
 			this.arraycards=l_partida.arraycards;
 			this.correct=l_partida.correct;
 			this.encertats=l_partida.encertats;
-			l_partida=null;
+			this.dificultat=l_partida.dificultat;
 		}
 		else{
 			this.username = sessionStorage.getItem("username","unknown");
@@ -67,10 +67,12 @@ class GameScene extends Phaser.Scene {
 				this.arraycards.push(this.items[k]);
 			}
 		}
+		sessionStorage.clear();
 		this.cameras.main.setBackgroundColor(0xBFFCFF);
 		let x=150;
 		let y=200;
 		for (let v=0;v<this.arraycards.length;v++){
+			console.log(this.arraycards[v]);
 			this.add.image(x,y,this.arraycards[v]);
 			x+=150;
 			if(x>=550){
@@ -120,11 +122,21 @@ class GameScene extends Phaser.Scene {
 			this.comencat=true;
 			let i=0;
 			this.cards.children.iterate((card)=>{
+				let m=0;
+				while(m<this.encertats.length){
+					if(this.arraycards[i]===this.encertats[m]){
+						i++;
+					}
+					else{
+						m++;
+					}
+				}
 				card.card_id=this.arraycards[i];
 				i++;
 				card.setInteractive();
 				card.on('pointerup', ()=> {
 					card.disableBody(true,true);
+					console.log(card.card_id);
 					if(this.firstClick){
 						if(this.firstClick.card_id !== card.card_id){
 							if(this.dificultat=="hard"){
@@ -173,7 +185,8 @@ class GameScene extends Phaser.Scene {
 			score: this.score,
 			arraycards: this.arraycards,
 			correct: this.correct,
-			encertats: this.encertats
+			encertats: this.encertats,
+			dificultat:this.dificultat
 			//cards: this.cards
 		}
 		let arrayPartides=[];
