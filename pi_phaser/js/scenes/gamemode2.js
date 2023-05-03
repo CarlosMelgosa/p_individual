@@ -16,6 +16,7 @@ class GameScene extends Phaser.Scene {
 		this.bad_clicks=0;
 		this.arraycards=[];
 		this.comencat=false;
+		this.nivell=1;
 		//this.l_partida=null;
 
 	}
@@ -50,6 +51,7 @@ class GameScene extends Phaser.Scene {
 			this.encertats=l_partida.encertats;
 			this.dificultat=l_partida.dificultat;
 			this.tempor=l_partida.temporitzador;
+			this.nivell=l_partida.nivell;
 		}
 		else{
 			this.username = sessionStorage.getItem("username","unknown");
@@ -57,7 +59,6 @@ class GameScene extends Phaser.Scene {
 			var game_data = JSON.parse(json);
 			this.num_card=game_data.cards;
 			this.dificultat=game_data.dificulty;
-			//let arraycards=[];
 			this.items = this.items.slice();
 			this.items.sort(function(){return Math.random() - 0.5});
 			this.items = this.items.slice(0, this.num_card);
@@ -66,6 +67,15 @@ class GameScene extends Phaser.Scene {
 			console.log(this.encertats.length);
 			for (var k = 0; k < this.items.length; k++){
 				this.arraycards.push(this.items[k]);
+			}
+			if(this.dificultat=="hard"){
+				this.tempor=500;
+			}
+			else if(this.dificultat=="normal"){
+				this.tempor=1000;
+			}
+			else{
+				this.tempor=1500;
 			}
 		}
 		sessionStorage.clear();
@@ -83,7 +93,7 @@ class GameScene extends Phaser.Scene {
 		}
 		this.cards= this.physics.add.staticGroup();
 		
-		if(this.dificultat=="hard"){
+		/*if(this.dificultat=="hard"){
 			this.tempor=500;
 		}
 		else if(this.dificultat=="normal"){
@@ -91,7 +101,7 @@ class GameScene extends Phaser.Scene {
 		}
 		else{
 			this.tempor=1500;
-		}
+		}*/
 		this.botoguardar = this.add.text(500, 500, 'Save game', {fill: '#fff'} );
 		this.botoguardar.setBackgroundColor('#7b3046')
 		this.botoguardar.setInteractive();
@@ -163,8 +173,37 @@ class GameScene extends Phaser.Scene {
 							this.correct++;
 							this.encertats.push(this.firstClick.card_id);
 							if(this.correct>=this.num_card){
+								let nombre_cartes=this.num_card;
+								let temps=this.tempor;
+								this.nivell++;
+								if(this.nivell%2!=0 && nombre_cartes<=6){
+									nombre_cartes++;
+								}
+								else/* if(this.nivell%2===0 || nombre_cartes===6)*/{
+									temps=temps/1.5;
+								}
+								let ronda={
+									username: this.username,
+									current_card: this.current_card,
+									items: this.items,
+									num_cards: nombre_cartes,
+									score: this.score,
+									arraycards: this.arraycards,
+									correct: this.correct,
+									encertats: this.encertats,
+									dificultat:this.dificultat,
+									temporitzador:temps,
+									nivell:this.nivell
+								}
+								let arrayPartides=[];
+									if(sessionStorage.partides){
+										arrayPartides=JSON.parse(localStorage.partides);
+										if(!Array.isArray(arrayPartides))arrayPartides=[];
+									}
+									arrayPartides.push(ronda);
+									sessionStorage.partides=JSON.stringify(arrayPartides);
 								alert("You Win with "+ this.score + " points.");
-								loadpage("../");
+								loadpage("./phasergamemode2.html");
 							}
 							this.firstClick=null;
 						}
@@ -188,9 +227,9 @@ class GameScene extends Phaser.Scene {
 			correct: this.correct,
 			encertats: this.encertats,
 			dificultat:this.dificultat,
-			temporitzador:this.tempor
+			temporitzador:this.tempor,
+			nivell:this.nivell
 			//cards: this.cards
-			
 		}
 		let arrayPartides=[];
 		if(localStorage.partides){
@@ -199,6 +238,7 @@ class GameScene extends Phaser.Scene {
 		}
 		arrayPartides.push(partida);
 		localStorage.partides=JSON.stringify(arrayPartides);
+		sessionStorage.clear();
 		loadpage("../");
 	}
 	update(){}
