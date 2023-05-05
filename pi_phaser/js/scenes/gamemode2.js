@@ -194,6 +194,27 @@ class GameScene extends Phaser.Scene {
 							},500);
 							if(this.score<=0){
 								alert("Game Over");
+								let partida={
+									username: this.username,
+									current_card: this.current_card,
+									items: this.items,
+									num_cards: this.num_card,
+									score: this.score,
+									arraycards: this.arraycards,
+									correct: this.correct,
+									encertats: this.encertats,
+									dificultat:this.dificultat,
+									temporitzador:this.tempor,
+									nivell:this.nivell
+									//cards: this.cards
+								}
+								let arrayPartides=[];
+								if(localStorage.partidesrush){
+									arrayPartides=JSON.parse(localStorage.partidesrush);
+									if(!Array.isArray(arrayPartides))arrayPartides=[];
+								}
+								arrayPartides.push(partida);
+								localStorage.partidesrush=JSON.stringify(arrayPartides);
 								loadpage("../");
 							}
 						}

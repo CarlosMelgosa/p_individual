@@ -1,0 +1,26 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<link rel="stylesheet" href="../styles/main.css">
+		<script src="../js/loader.js"></script>
+		<title> My first game - Game </title>
+	</head>
+	<body>
+		<div id="rank">
+			<table>
+				<tr>
+				  <th>Nivell</th>
+				  <th>Username</th>
+				</tr>
+				<tr v-for="(item,indx) in rankdata" :key="indx">
+					<td>{{item['nivell']}}</td>
+					<td>{{item['username']}}</td>
+				</tr>
+			</table>
+		</div>
+		<a class="menu-object" href="../">GoToMenu</a>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+	<script src="../js/loadrank.js"></script>
+</html>
+

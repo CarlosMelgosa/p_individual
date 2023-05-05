@@ -25,9 +25,15 @@ function start_phasergame_mode2(){
 function load(){
 	loadpage("./html/load.html");
 }
+
 function load_rush(){
 	loadpage("./html/loadrush.html");
 }
+
+function ranking(){
+	loadpage("./html/rank.html");
+}
+
 function exit (){
 	if (name != ""){
 		alert("Leaving " + name + "'s game");
