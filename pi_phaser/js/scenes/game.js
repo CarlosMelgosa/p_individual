@@ -140,20 +140,24 @@ class GameScene extends Phaser.Scene {
 					console.log(card.card_id);
 					if(this.firstClick){
 						if(this.firstClick.card_id !== card.card_id){
+							let tempsshow=0;
 							if(this.dificultat=="hard"){
 								this.score-=35;
+								tempsshow=50;
 							}
 							else if(this.dificultat=="normal"){
 								this.score-=20;
+								tempsshow=100;
 							}
 							else{
 								this.score-=10;
+								tempsshow=150;
 							}
 							setTimeout(() => {	
 								this.firstClick.enableBody(false,0,0,true,true);
 								card.enableBody(false,0,0,true,true);
 								this.firstClick=null;
-							},500);
+							},tempsshow);
 							if(this.score<=0){
 								alert("Game Over");
 								loadpage("../");
